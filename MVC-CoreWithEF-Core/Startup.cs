@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using DataLayer.Employee;
-using DB.Core.Models;
+using DataLayer.EmployeeRepo;
+using DBCoreLayer.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -28,13 +28,18 @@ namespace MVC_CoreWithEF_Core
         {
 
             services.AddDbContext<MVCEFCoreContext>();
-            services.AddScoped<IEmployeeService, EmployeeService>();
-            services.AddScoped<IUnitOfWorkService, UnitOfWorkService>();
-            //services.AddScoped<IEmployeeRepo, EmployeeRepo>();
-
             services.AddSession(opt => opt.IdleTimeout = TimeSpan.FromMinutes(30));
-      //          opts =>
-      //opts.UseSqlServer(Configuration["DefaultConnection:MVCEFCoreContext"]));
+
+            #region Inversion of Control(DI)
+
+            services.AddScoped<IEmployeeService, EmployeeService>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IEmployeeRepo, EmployeeRepo>();
+            services.AddScoped<MVCEFCoreContext>();
+
+            #endregion
+            //          opts =>
+            //opts.UseSqlServer(Configuration["DefaultConnection:MVCEFCoreContext"]));
             services.AddMvc();
             //services.AddDbContext<MVCEFCoreContext>(options => options.UseSqlServer(Configuration.GetConnectionString("MVCEFCoreContext")));
         }

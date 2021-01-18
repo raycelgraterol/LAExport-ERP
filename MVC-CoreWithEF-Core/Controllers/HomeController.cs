@@ -3,20 +3,19 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
-using DB.Core.Models;
 using Microsoft.AspNetCore.Mvc;
 using MVC_CoreWithEF_Core.Models;
 using MVCCoreWithEFCore.ExtensionMethods;
+using ServiceLayer.Employee;
 
 namespace MVC_CoreWithEF_Core.Controllers
 {
     public class HomeController : Controller
     {
+        
         public IActionResult Index()
         {
-            MVCEFCoreContext db = new MVCEFCoreContext();
-            HttpContext.Session.GetObject<dynamic>("CurrentUser");
-            return Json(db.Employees.ToList());
+            return View();
         }
 
         public IActionResult About()
